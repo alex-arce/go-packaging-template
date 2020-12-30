@@ -1,0 +1,56 @@
+builds:
+  - main: src/main.go
+    binary: test-server
+    goos:
+      #- windows
+      #- darwin
+      - linux
+    goarch:
+      - amd64
+        #- 386
+        #- arm
+        #- arm64
+    #goarm:
+    #  - 5
+    #  - 6
+    #  - 7
+    #ignore:
+    #  - goos: darwin
+    #    goarch: 386
+
+release:
+  disable: true
+
+nfpms:
+  -
+    id: test-server
+    vendor: TestServer
+    homepage: https://github.com/alex-arce/
+    maintainer: Alex Arce <alex.arce@pm.me>
+    description: Test Server
+    license: MIT
+  
+    formats:
+      - deb
+      - rpm
+  
+    bindir: /usr/sbin
+  
+    contents:
+      - src: "packaging/files/test-server.rotate"
+        dst: "/etc/logrotate.d/test-server"
+
+      - src: "packaging/files/test-server.init"
+        dst: "/etc/systemd/system/test-server.service"
+
+      - src: "packaging/files/test-server.service"
+        dst: "/etc/systemd/system/test-server.service"        
+
+      - src: "packaging/files/test-server.json"
+        dst: "/etc/test-server/test-server.json"
+        type: config
+
+    scripts:
+      preinstall: "packaging/scripts/pre-install.sh"
+      postinstall: "packaging/scripts/post-install.sh"
+      postremove: "packaging/scripts/post-remove.sh"

@@ -1,0 +1,14 @@
+[Unit]
+Description=Test Server
+Documentation=https://github.com/alex-arce/
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=test
+Group=test
+ExecStart=/usr/sbin/test-server
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
